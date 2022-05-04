@@ -18,7 +18,7 @@ export default {
   },
   setup() {
     let dataSource: Ref<TableSource[]> = ref([]);
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 150; index++) {
       dataSource.value.push({
         key: index,
         name: `Edrward ${index}`,
