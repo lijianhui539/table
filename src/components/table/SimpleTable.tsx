@@ -1,7 +1,7 @@
 import { defineComponent, ref } from "vue";
-import type { TableProps } from "./types";
+import type { TableProps, ColumnType } from "./types";
 import Pagination from "../pagination";
-
+import classnames from 'classnames'
 export default defineComponent({
   name: "SimpleTable",
   props: {
@@ -27,16 +27,18 @@ export default defineComponent({
   components: {
     Pagination,
   },
-  setup(props: TableProps, { attrs, emit, slots }) {
- 
+  setup(props: TableProps) {
     let current = ref(1);
     let onPageChange = (pageNumber: number) => {
-      current.value = pageNumber
+      current.value = pageNumber;
     };
-    
-    let renderList = props.columns.map(item => {})
 
     return () => {
+      let renderList: ColumnType[] = props.dataSource.slice(
+        (current.value - 1) * props.pageSize,
+        current.value * props.pageSize
+      );
+
       return (
         <>
           <table class="is-bordered is-hoverable is-fullwidth table">
@@ -44,19 +46,18 @@ export default defineComponent({
               <tr>
                 {props.columns.map((item) => {
                   return (
-                    <td
-                      key={item.key}
-                      class="icon-shangjiantou"
-                      title={item.title}
-                    >
-                      {item.title}
+                    <td>
+                      <div key={item.key}>
+                        <span class="iconfont icon-shangjiantou"></span>
+                        <span title={item.title}>{item.title}</span>
+                      </div>
                     </td>
                   );
                 })}
               </tr>
             </thead>
             <tbody>
-              {props.dataSource.map((row) => {
+              {renderList.map((row) => {
                 return (
                   <tr key={props.rowKey(row)}>
                     {props.columns.map((cell) => {

@@ -1,5 +1,5 @@
 
-type ColumnType = {
+export type ColumnType = {
     key: string;
     title: string;
     render?: (row: any) => JSX.Element
@@ -8,6 +8,6 @@ type ColumnType = {
 export type TableProps<T=any> =  {
   dataSource: T[];
   columns: ColumnType[];
-  rowKey: () => string;
+  rowKey: (row: ColumnType) => string;
   pageSize: number;
 }
