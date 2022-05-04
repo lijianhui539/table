@@ -1,0 +1,16 @@
+// Vitest Snapshot v1
+
+exports[`mount component 1`] = `
+"<table>
+  <thead>
+    <th>
+    <td></td>
+    </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>hello table</td>
+    </tr>
+  </tbody>
+</table>"
+`;
