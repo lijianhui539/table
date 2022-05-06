@@ -1,10 +1,10 @@
 <template>
-  <SimpleTable :dataSource="dataSource" :columns="columns" :rowKey="(row) => row.key" />
+  <Table :dataSource="dataSource" :columns="columns" :rowKey="(row) => row.key" />
 </template>
 
 <script lang="ts">
 import { ref, Ref } from "vue";
-import SimpleTable from "./components/table/SimpleTable";
+import Table from "./components/table/index";
 interface TableSource {
   key: number;
   name: string;
@@ -14,7 +14,7 @@ interface TableSource {
 }
 export default {
   components: {
-    SimpleTable,
+    Table,
   },
   setup() {
     let dataSource: Ref<TableSource[]> = ref([]);

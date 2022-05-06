@@ -10,10 +10,12 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.182",
     "bulma": "^0.9.3",
     "classnames": "^2.3.1",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "lodash": "^4.17.21",
     "vue": "^3.2.25"
   },
   "devDependencies": {
