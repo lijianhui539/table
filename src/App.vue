@@ -1,5 +1,9 @@
 <template>
-  <Table :dataSource="dataSource" :columns="columns" :rowKey="(row) => row.key" />
+  <Table
+    :dataSource="dataSource"
+    :columns="columns"
+    :rowKey="(row) => row.key"
+  />
 </template>
 
 <script lang="ts">
@@ -22,7 +26,8 @@ export default {
       dataSource.value.push({
         key: index,
         name: `Edrward ${index}`,
-        age: 18 + index,
+        // 生成随机年龄 展示排序功能时使用
+        age: Math.ceil(Math.random() * 100),
         address: `London Park no. ${index}`,
         tags: ["nice", "developer"],
       });
@@ -36,6 +41,7 @@ export default {
       {
         title: "年龄",
         key: "age",
+        sortable: true
       },
       {
         title: "住址",

@@ -1,30 +1,30 @@
-import { defineComponent, provide } from "vue";
-import { type TableProps, tableProps } from "./types";
-import TableHead from "./TableHead"
+import { defineComponent, provide, ref } from "vue";
+import { type TableProps, tableProps, ColumnType } from "./types";
+import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import Pagination from "../pagination";
-import { TABLE_PROPS } from "./const"
-import { usePagination } from "../hooks/usePagination"
+import { TABLE_PROPS } from "./const";
+import { usePagination } from "../hooks/usePagination";
 export default defineComponent({
   name: "SimpleTable",
   props: tableProps,
   components: {
     Pagination,
     TableBody,
-    TableHead
+    TableHead,
   },
   setup(props: TableProps) {
-    let { dataSource, pageSize } = props
-    let { current, onPageChange } = usePagination()
+    let { dataSource, pageSize } = props;
+    let { currentPage, onPageChange } = usePagination();
+
     let tableData = {
-      current,
-      props
-    }
+      currentPage,
+      props,
+    };
 
     // 提供给body使用
-    provide(TABLE_PROPS, tableData)
+    provide(TABLE_PROPS, tableData);
     return () => {
-
       return (
         <>
           <table class="is-bordered is-hoverable is-fullwidth table">
@@ -33,7 +33,7 @@ export default defineComponent({
           </table>
           <Pagination
             total={dataSource.length}
-            current={current.value}
+            currentPage={currentPage.value}
             pageSize={pageSize}
             onChange={(val) => onPageChange(val)}
           ></Pagination>

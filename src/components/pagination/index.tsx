@@ -1,4 +1,4 @@
-import { defineComponent, ref, Ref } from "vue";
+import { defineComponent, ref, Ref, toRefs } from "vue";
 import type { PaginationTypes } from "./types";
 import classnames from "classnames";
 
@@ -13,13 +13,15 @@ export default defineComponent({
       type: Number,
       default: 10,
     },
-    current: {
+    currentPage: {
       type: Number,
       default: 1,
     },
   },
   emits: ["change"],
   setup(props: PaginationTypes, { emit }) {
+    let { currentPage } = toRefs(props);
+
     let jumpPage: Ref<string | number> = ref("");
     let handleClick = (pageNumber: number, pageCount: number) => {
       if (pageNumber > pageCount || pageNumber < 1) {
@@ -55,11 +57,17 @@ export default defineComponent({
           if (index === 1 || index === pageCount) {
             return true;
           } else {
-            if (props.current < 4 && index < 6) {
+            if (currentPage.value < 4 && index < 6) {
               return true;
-            } else if (props.current > pageCount - 4 && index > pageCount - 6) {
+            } else if (
+              currentPage.value > pageCount - 4 &&
+              index > pageCount - 6
+            ) {
               return true;
-            } else if (index < props.current + 3 && index > props.current - 3) {
+            } else if (
+              index < currentPage.value + 3 &&
+              index > currentPage.value - 3
+            ) {
               return true;
             } else {
               return false;
@@ -78,17 +86,17 @@ export default defineComponent({
           <div class="pagination is-centered">
             <a
               class={classnames("pagination-previous", {
-                "pagination-button-disabled": props.current === 1,
+                "pagination-button-disabled": currentPage.value === 1,
               })}
-              onClick={() => handleClick(props.current - 1, pageCount)}
+              onClick={() => handleClick(currentPage.value - 1, pageCount)}
             >
               上一页
             </a>
             <a
               class={classnames("pagination-next", {
-                "pagination-button-disabled": props.current === pageCount,
+                "pagination-button-disabled": currentPage.value === pageCount,
               })}
-              onClick={() => handleClick(props.current + 1, pageCount)}
+              onClick={() => handleClick(currentPage.value + 1, pageCount)}
             >
               下一页
             </a>
@@ -99,7 +107,7 @@ export default defineComponent({
                     <span onClick={() => handleClick(item, pageCount)}>
                       <a
                         class={classnames("pagination-link", {
-                          "is-current": props.current === item,
+                          "is-current": currentPage.value === item,
                         })}
                       >
                         {item}
@@ -107,7 +115,7 @@ export default defineComponent({
                     </span>
                   );
                 } else if (isShowEllipsis(item)) {
-                  return <span class="pagination-ellipsis">&hellip;</span>
+                  return <span class="pagination-ellipsis">&hellip;</span>;
                 }
               })}
               <div class="pagination pagination-jump">

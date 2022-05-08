@@ -3,6 +3,8 @@ export type ColumnType = {
   key: string;
   title: string;
   render?: string | ((row: any) => VNodeChild);
+  sort?: string;
+  sortable?: boolean;
 };
 
 // 表头 props
@@ -26,7 +28,7 @@ export const tableProps = {
   },
   rowKey: {
     type: Function as PropType<(record: ColumnType) => string>,
-    default: () => { return () => ''},
+    default: () => { return () => '' },
   },
   pageSize: { type: Number, default: 10 },
 };
