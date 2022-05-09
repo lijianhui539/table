@@ -1,8 +1,12 @@
-import { PropType, VNodeChild, ExtractPropTypes } from "vue";
+/**
+ * @file table类型定义
+ */
+
+import { PropType, ExtractPropTypes, VNode } from "vue";
 export type ColumnType = {
   key: string;
   title: string;
-  render?: string | ((row: any) => VNodeChild);
+  render?: string | ((row: any) => VNode);
   sort?: string;
   sortable?: boolean;
 };
@@ -27,7 +31,7 @@ export const tableProps = {
     default: () => [],
   },
   rowKey: {
-    type: Function as PropType<(record: ColumnType) => string>,
+    type: Function as PropType<(record: any) => string>,
     default: () => { return () => '' },
   },
   pageSize: { type: Number, default: 10 },

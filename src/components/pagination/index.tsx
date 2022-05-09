@@ -1,3 +1,7 @@
+/** 
+  @file 分页器
+*/
+
 import { defineComponent, ref, Ref, toRefs } from "vue";
 import type { PaginationTypes } from "./types";
 import classnames from "classnames";

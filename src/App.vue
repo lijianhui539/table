@@ -46,7 +46,7 @@ export default {
       {
         title: "住址",
         key: "address",
-        render: (value: any) => {
+        render: (value: TableSource) => {
           return value.address;
         },
       },

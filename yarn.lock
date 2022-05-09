@@ -337,6 +337,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.31.tgz#a5bb84ecfa27eec5e1c802c6bbf8139bdb163a5d"
   integrity sha512-AR0x5HbXGqkEx9CadRH3EBYx/VkiUgZIhP4wvPn/+5KIsgpNoyFaRlVe0Zlx9gRtg8fA06a9tskE2MSN7TcG4Q==
 
+"@types/pubsub-js@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.npmmirror.com/@types/pubsub-js/-/pubsub-js-1.8.3.tgz#f480a9e4f72f50e1e3cc598ef1b32f3bfbbcd6b6"
+  integrity sha512-6BqY04dh2UV1dNV690tyJVJYQ0U6qBH4tU+FCwY1Mhl8jOPOP9qiIvgLnB59cVik/E6/R002oXZpGiDm+2C8eA==
+
 "@vitejs/plugin-vue-jsx@^1.3.10":
   version "1.3.10"
   resolved "https://registry.npmmirror.com/@vitejs/plugin-vue-jsx/-/plugin-vue-jsx-1.3.10.tgz"
@@ -1362,11 +1367,6 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-mitt@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/mitt/-/mitt-3.0.0.tgz#69ef9bd5c80ff6f57473e8d89326d01c414be0bd"
-  integrity sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==
-
 ms@2.1.2, ms@^2.1.1:
   version "2.1.2"
   resolved "https://registry.npmmirror.com/ms/-/ms-2.1.2.tgz"
@@ -1502,6 +1502,11 @@ psl@^1.1.33:
   version "1.8.0"
   resolved "https://registry.npmmirror.com/psl/-/psl-1.8.0.tgz"
   integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
+
+pubsub-js@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.npmmirror.com/pubsub-js/-/pubsub-js-1.9.4.tgz#5c8678600e34e95b1269e96c17e1b51dab3ecb5a"
+  integrity sha512-hJYpaDvPH4w8ZX/0Fdf9ma1AwRgU353GfbaVfPjfJQf1KxZ2iHaHl3fAUw1qlJIR5dr4F3RzjGaWohYUEyoh7A==
 
 punycode@^2.1.1:
   version "2.1.1"

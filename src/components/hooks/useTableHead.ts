@@ -1,7 +1,11 @@
+/** 
+  @file 表头处理逻辑
+*/
+
 import { TableSort, SORT_TYPE_LIST } from "../table/const"
-import { ref, computed, ComputedRef, Ref } from 'vue';
+import { ref, computed, ComputedRef } from 'vue';
 import { ColumnType } from "../table/types"
-import myBus from '@src/bus';
+import PubSub from 'pubsub-js'
 export function useTableHead(columns: ColumnType[]) {
     let sortListIndex = ref(0)
     let fieldKey = ref('')
@@ -31,11 +35,11 @@ export function useTableHead(columns: ColumnType[]) {
         fieldKey.value = val
         if (sortListIndex.value === 2) {
             sortListIndex.value = 0
-            myBus.emit('table-head-sort', { fieldKey, sortType })
+            PubSub.publish('table-head-sort', { fieldKey: fieldKey.value, sortType: sortType.value });
             return
         }
         sortListIndex.value++
-        myBus.emit('table-head-sort', { fieldKey, sortType })
+        PubSub.publish('table-head-sort', { fieldKey: fieldKey.value, sortType: sortType.value });
     }
 
     return {

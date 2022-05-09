@@ -1,13 +1,17 @@
-import { defineComponent, inject, watch } from "vue";
+/**
+ * @file 表格body
+ */
+
+import { defineComponent, inject } from "vue";
 import { TABLE_PROPS } from "./const";
-import { useTable } from "../hooks/useTable";
+import { useTableBody } from "../hooks/useTableBody";
 import lodashIsString from "lodash/isString";
 
 export default defineComponent({
   name: "TableBody",
   setup() {
     let { props, currentPage } = inject(TABLE_PROPS)!;
-    let { renderList } = useTable(props, currentPage);
+    let { renderList } = useTableBody(props, currentPage);
     return () => {
       return (
         <>

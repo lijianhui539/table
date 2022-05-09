@@ -1,3 +1,7 @@
+/**
+ * @file table常量定义
+ */
+
 import { InjectionKey, Ref } from "vue"
 import { type TableProps,ColumnType } from "./types";
 
