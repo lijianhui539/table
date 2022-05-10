@@ -6,6 +6,7 @@ import { defineComponent, inject } from "vue";
 import { TABLE_PROPS } from "./const";
 import { useTableBody } from "../hooks/useTableBody";
 import lodashIsString from "lodash/isString";
+import lodashGet from "lodash/get"
 
 export default defineComponent({
   name: "TableBody",
@@ -27,8 +28,8 @@ export default defineComponent({
                           : cell.render(row)}
                       </td>
                     ) : (
-                      <td key={cell.key} title={row[cell.key]}>
-                        {row[cell.key]}
+                      <td key={cell.key} title={lodashGet(row, cell.key, '')}>
+                        {lodashGet(row, cell.key, '-')}
                       </td>
                     );
                   })}

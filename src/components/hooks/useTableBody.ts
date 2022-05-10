@@ -2,21 +2,23 @@
   @file 表格内容处理逻辑
 */
 
-import type { TableProps } from "../table/types";
+import type { TableProps, DataSourceType } from "../table/types";
 import { Ref, onMounted, watch, ref, onBeforeUnmount } from "vue";
 import { TableSort } from "../table/const";
 import cloneDeep from "lodash/cloneDeep";
-import PubSub from 'pubsub-js'
+import PubSub from "pubsub-js";
+
+type DataSourceTypeKeys = keyof DataSourceType;
 
 export function useTableBody(props: TableProps, currentPage: Ref<number>) {
-  let renderList: Ref<any[]> = ref([]);
-  let sourceData: any[] = [];
+  let renderList: Ref<DataSourceType[]> = ref([]);
+  let sourceData: DataSourceType[] = [];
 
-  let token = ''
+  let pubSubToken = "";
 
   // 记录排序 和 排序字段 翻页时使用
-  let recordFieldKey = ''
-  let recordSortType = ''
+  let recordFieldKey = "";
+  let recordSortType = "";
 
   // 页码变化翻页
   watch(
@@ -24,7 +26,6 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
       currentPage.value;
     },
     () => {
-
       // 分页
       renderList.value = props.dataSource.slice(
         (currentPage.value - 1) * props.pageSize,
@@ -33,10 +34,14 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
 
       // 记录源数据 取消排序时使用
       sourceData = cloneDeep(renderList.value);
-
-      // 排序状态下翻页
-      if (recordFieldKey && recordSortType) {
-        renderList.value = fnSortTable(renderList.value, recordFieldKey, recordSortType, sourceData)
+      // 排序状态下翻页  只有数字排序有效果
+      if (recordFieldKey && recordSortType && recordFieldKey === "age") {
+        renderList.value = fnSortTable(
+          renderList.value,
+          recordFieldKey,
+          recordSortType,
+          sourceData
+        );
       }
     },
     {
@@ -46,22 +51,30 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
   );
 
   // 获取tableHead传出的排序字段和排序顺序
-  let tableHeadSort = (msg: string, { fieldKey, sortType }:Record<string, string>) => {
+  let tableHeadSort = (
+    msg: string,
+    { fieldKey, sortType }: Record<string, string>
+  ) => {
     // 记录排序字段和排序顺序
-    recordFieldKey = fieldKey
-    recordSortType = sortType
+    recordFieldKey = fieldKey;
+    recordSortType = sortType;
 
     // 排序
-    renderList.value = fnSortTable(renderList.value, fieldKey, sortType, sourceData)
+    renderList.value = fnSortTable(
+      renderList.value,
+      fieldKey as "age",
+      sortType,
+      sourceData
+    );
   };
 
   onMounted(() => {
-    token = PubSub.subscribe("table-head-sort", tableHeadSort);
+    pubSubToken = PubSub.subscribe("table-head-sort", tableHeadSort);
   });
 
   onBeforeUnmount(() => {
-    PubSub.unsubscribe(token);
-  })
+    PubSub.unsubscribe(pubSubToken);
+  });
   return {
     renderList,
   };
@@ -73,9 +86,14 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
  * @param field 排序字段
  * @param type 排序类型
  * @param sourceData 恢复默认排序的原始数据
- * @returns 
+ * @returns
  */
-function fnSortTable(tableData: any[], field: string, type: string, sourceData: any[]) {
+function fnSortTable(
+  tableData: DataSourceType[],
+  field: Extract<DataSourceTypeKeys, "age">,
+  type: string,
+  sourceData: DataSourceType[]
+) {
   // 取消排序恢复数据
   if (type === TableSort.Disable) {
     return cloneDeep(sourceData);

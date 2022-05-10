@@ -6,10 +6,18 @@ import { PropType, ExtractPropTypes, VNode } from "vue";
 export type ColumnType = {
   key: string;
   title: string;
-  render?: string | ((row: any) => VNode);
+  render?: string | ((row: DataSourceType) => VNode);
   sort?: string;
   sortable?: boolean;
 };
+
+export type DataSourceType = {
+  key: number;
+  name: string;
+  age: number;
+  address: string;
+  tags: string[];
+}
 
 // 表头 props
 export const tableHeadProps = {
@@ -23,7 +31,7 @@ export const tableHeadProps = {
 // table props
 export const tableProps = {
   dataSource: {
-    type: Array as PropType<any[]>,
+    type: Array as PropType<DataSourceType[]>,
     default: () => [],
   },
   columns: {
@@ -31,7 +39,7 @@ export const tableProps = {
     default: () => [],
   },
   rowKey: {
-    type: Function as PropType<(record: any) => string>,
+    type: Function as PropType<(record: DataSourceType) => string | number>,
     default: () => { return () => '' },
   },
   pageSize: { type: Number, default: 10 },
