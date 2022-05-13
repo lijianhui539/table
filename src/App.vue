@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { ref, Ref } from "vue";
+import { ref, Ref, h } from "vue";
 import Table from "./components/table/index";
 interface TableSource {
   key: number;
@@ -47,7 +47,7 @@ export default {
         title: "住址",
         key: "address",
         render: (value: TableSource) => {
-          return value.address;
+          return h('div',value.address)
         },
       },
     ]);

@@ -2,7 +2,7 @@
  * @file table
  */
 
-import { defineComponent, provide } from "vue";
+import { defineComponent, provide, toRefs } from "vue";
 import { type TableProps, tableProps } from "./types";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
@@ -19,7 +19,7 @@ export default defineComponent({
     TableHead,
   },
   setup(props: TableProps) {
-    let { dataSource, pageSize } = props;
+    let { dataSource, pageSize } = toRefs(props);
     let { currentPage, onPageChange } = useTable();
     let tableData = {
       currentPage,
@@ -37,9 +37,9 @@ export default defineComponent({
             <TableBody></TableBody>
           </table>
           <Pagination
-            total={dataSource.length}
+            total={dataSource.value.length}
             currentPage={currentPage.value}
-            pageSize={pageSize}
+            pageSize={pageSize.value}
             onChange={(val: number) => onPageChange(val)}
           ></Pagination>
         </>

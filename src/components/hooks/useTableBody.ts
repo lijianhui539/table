@@ -12,8 +12,10 @@ type DataSourceTypeKeys = keyof DataSourceType;
 
 export function useTableBody(props: TableProps, currentPage: Ref<number>) {
   let renderList: Ref<DataSourceType[]> = ref([]);
-  let sourceData: DataSourceType[] = [];
+  let { pageSize, dataSource } = props
 
+  // 记录源数据 取消排序时使用
+  let sourceData: DataSourceType[] = cloneDeep(dataSource);
   let pubSubToken = "";
 
   // 记录排序 和 排序字段 翻页时使用
@@ -26,23 +28,21 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
       currentPage.value;
     },
     () => {
-      // 分页
-      renderList.value = props.dataSource.slice(
-        (currentPage.value - 1) * props.pageSize,
-        currentPage.value * props.pageSize
-      );
-
-      // 记录源数据 取消排序时使用
-      sourceData = cloneDeep(renderList.value);
       // 排序状态下翻页  只有数字排序有效果
-      if (recordFieldKey && recordSortType && recordFieldKey === "age") {
-        renderList.value = fnSortTable(
-          renderList.value,
+      if (recordFieldKey && recordSortType && recordFieldKey === "age") {  // todo: 必须指定字段才能规避ts报错问题 待学习ts后解决
+        dataSource = fnSortTable(
+          dataSource,
           recordFieldKey,
           recordSortType,
           sourceData
         );
       }
+
+      // 分页
+      renderList.value = dataSource.slice(
+        (currentPage.value - 1) * pageSize,
+        currentPage.value * pageSize
+      );
     },
     {
       immediate: true,
@@ -61,11 +61,17 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
 
     // 排序
     renderList.value = fnSortTable(
-      renderList.value,
+      dataSource,
       fieldKey as "age",
       sortType,
       sourceData
+    ).slice(
+      (currentPage.value - 1) * pageSize,
+      currentPage.value * pageSize
     );
+
+    // 排序完回第一页
+    currentPage.value = 1
   };
 
   onMounted(() => {
