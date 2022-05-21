@@ -41,13 +41,13 @@ export default {
       {
         title: "年龄",
         key: "age",
-        sortable: true
+        sortable: true,
       },
       {
         title: "住址",
         key: "address",
         render: (value: TableSource) => {
-          return h('div',value.address)
+          return h("div", value.address);
         },
       },
     ]);

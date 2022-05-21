@@ -17,7 +17,13 @@ export type DataSourceType = {
   age: number;
   address: string;
   tags: string[];
-}
+};
+
+// 排序事件emit的对象
+export type SortOptions = {
+  sortKey: string;
+  sortType: string;
+};
 
 // 表头 props
 export const tableHeadProps = {
@@ -25,8 +31,34 @@ export const tableHeadProps = {
     type: Array as PropType<ColumnType[]>,
     default: () => [],
   },
+  sortOptions: {
+    type: Object as PropType<SortOptions>,
+    default: () => ({}),
+  },
 };
 
+// 表头 单元格 props
+export const tableHeadCellProps = {
+  column: {
+    type: Object as PropType<ColumnType>,
+    default: () => ({}),
+  },
+  sortOptions: {
+    type: Object as PropType<SortOptions>,
+    default: () => ({}),
+  },
+};
+
+export const tableBodyCellProps = {
+  rowData: {
+    type: Object as PropType<DataSourceType>,
+    default: () => ({}),
+  },
+  column: {
+    type: Object as PropType<ColumnType>,
+    default: () => ({}),
+  },
+};
 
 // table props
 export const tableProps = {
@@ -40,10 +72,13 @@ export const tableProps = {
   },
   rowKey: {
     type: Function as PropType<(record: DataSourceType) => string | number>,
-    default: () => { return () => '' },
+    default: () => {
+      return () => "";
+    },
   },
   pageSize: { type: Number, default: 10 },
 };
 
 export type TableProps = ExtractPropTypes<typeof tableProps>;
 export type TableHeadProps = ExtractPropTypes<typeof tableHeadProps>;
+export type TableHeadCellProps = ExtractPropTypes<typeof tableHeadCellProps>;
