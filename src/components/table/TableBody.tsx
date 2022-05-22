@@ -2,12 +2,10 @@
  * @file 表格body
  */
 
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, onMounted } from "vue";
 import { TABLE_PROPS } from "./const";
 import { useTableBody } from "../hooks/useTableBody";
 import TableBodyCell from "./TableBodyCell";
-import lodashIsString from "lodash/isString";
-import lodashGet from "lodash/get";
 
 export default defineComponent({
   name: "TableBody",

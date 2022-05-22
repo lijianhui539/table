@@ -10,7 +10,7 @@ import { TableSort, TABLE_PROPS } from "./const";
 import classnames from "classnames";
 
 export default defineComponent({
-  name: "TableHead",
+  name: "TableHeadCell",
   props: tableHeadCellProps,
   setup(props: TableHeadCellProps) {
     let { onTableSort } = inject(TABLE_PROPS)!;
