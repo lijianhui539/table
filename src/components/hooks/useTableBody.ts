@@ -23,7 +23,7 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
   }
 
   // 记录源数据 取消排序时使用
-  let sourceData: DataSourceType[] = cloneDeep(dataSource);
+  let sourceData = cloneDeep(dataSource);
   let pubSubToken = "";
 
   // 记录排序 和 排序字段 翻页时使用

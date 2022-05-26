@@ -3,8 +3,8 @@
  */
 
 import { TableHeadCellProps, SortOptions } from "../table/types";
-import { ref, ComputedRef, computed } from "vue";
-import { TableSort, SORT_TYPE_LIST } from "../table/const";
+import { ref, computed } from "vue";
+import { SORT_TYPE_LIST, SortIconStatus } from "../table/const";
 import PubSub from "pubsub-js";
 import { Logger } from '@src/utils/logger';
 const MODULE = 'table-head-cell'
@@ -14,9 +14,9 @@ export function useTableHeadCell(
   sortEmit: (val: SortOptions) => void
 ) {
   let { column } = props;
-  let sortListIndex = ref(0);
+  let sortListIndex = ref(SortIconStatus.Disable);
   let fieldKey = ref("");
-  let sortType: ComputedRef<TableSort> = computed(() => {
+  let sortType = computed(() => {
     let resType = SORT_TYPE_LIST[sortListIndex.value];
     column.sort = resType;
     sortEmit({
@@ -27,9 +27,9 @@ export function useTableHeadCell(
   });
 
   let onSort = (val: string) => {
-    // 点击不同字段  sortListIndex 恢复0 排序恢复默认值
+    // 点击不同字段  sortListIndex 恢复Disable 排序恢复默认值
     if (val !== fieldKey.value) {
-      sortListIndex.value = 0;
+      sortListIndex.value = SortIconStatus.Disable;
     }
 
     fieldKey.value = val;
@@ -37,8 +37,8 @@ export function useTableHeadCell(
       fieldKey: fieldKey.value,
       sortType: sortType.value,
     }
-    if (sortListIndex.value === 2) {
-      sortListIndex.value = 0;
+    if (sortListIndex.value === SortIconStatus.Desc) {
+      sortListIndex.value = SortIconStatus.Disable;
       PubSub.publish("table-head-sort", sortOptions);
       Logger.trace(MODULE, `handle sort event sortOptions: ${JSON.stringify(sortOptions)}`)
       return;

@@ -11,6 +11,12 @@ export interface TableData {
     onTableSort: (sortOptions: SortOptions) => void
 }
 
+export enum SortIconStatus {
+    Disable,
+    Asc,
+    Desc,
+}
+
 export enum TableSort {
     Asc = 'asc',
     Desc = 'desc',

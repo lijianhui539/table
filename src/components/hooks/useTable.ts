@@ -18,7 +18,7 @@ export function useTable(props: TableProps) {
   let currentPage = ref(1);
 
   // 拿来数据先设置默认的排序规则
-  let renderColumns: ComputedRef<ColumnType[]> = computed(() => {
+  let renderColumns = computed(() => {
     return columns.map((item) => {
       item.sort = TableSort.Disable;
       return item;
