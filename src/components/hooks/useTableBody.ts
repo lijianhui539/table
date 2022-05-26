@@ -7,12 +7,20 @@ import { Ref, onMounted, watch, ref, onBeforeUnmount } from "vue";
 import { TableSort } from "../table/const";
 import cloneDeep from "lodash/cloneDeep";
 import PubSub from "pubsub-js";
+import { Logger } from '@src/utils/logger';
+const MODULE = 'table-body'
 
 type DataSourceTypeKeys = keyof DataSourceType;
 
 export function useTableBody(props: TableProps, currentPage: Ref<number>) {
   let renderList: Ref<DataSourceType[]> = ref([]);
   let { pageSize, dataSource } = props
+
+  // 异常处理
+  if (!Array.isArray(dataSource)) {
+    Logger.error(MODULE, 'error: dataSource Expected Array');
+    dataSource = []
+  }
 
   // 记录源数据 取消排序时使用
   let sourceData: DataSourceType[] = cloneDeep(dataSource);
@@ -76,10 +84,12 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
 
   onMounted(() => {
     pubSubToken = PubSub.subscribe("table-head-sort", tableHeadSort);
+    Logger.trace(MODULE, 'mount table-head-sort event seccuss')
   });
 
   onBeforeUnmount(() => {
     PubSub.unsubscribe(pubSubToken);
+    Logger.trace(MODULE, 'unmount table-head-sort event seccuss')
   });
   return {
     renderList,

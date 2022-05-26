@@ -3,11 +3,12 @@
  */
 
 import { InjectionKey, Ref } from "vue"
-import type { TableProps } from "./types";
+import type { TableProps, SortOptions } from "./types";
 
 export interface TableData {
     currentPage: Ref<number>;
-    props: TableProps
+    props: TableProps,
+    onTableSort: (sortOptions: SortOptions) => void
 }
 
 export enum TableSort {

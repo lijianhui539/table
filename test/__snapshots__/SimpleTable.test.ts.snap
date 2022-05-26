@@ -14,3 +14,11 @@ exports[`mount component 1`] = `
   </tbody>
 </table>"
 `;
+
+exports[`test table dataSource and columns 1`] = `
+"<table class=\\"is-bordered is-hoverable is-fullwidth table\\">
+  <table-head-stub columns=\\"[object Object],[object Object],[object Object]\\" sortoptions=\\"[object Object]\\"></table-head-stub>
+  <table-body-stub></table-body-stub>
+</table>
+<pagination-stub total=\\"20\\" pagesize=\\"10\\" currentpage=\\"1\\"></pagination-stub>"
+`;

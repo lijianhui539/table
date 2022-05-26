@@ -5,6 +5,8 @@
 import { defineComponent, ref, Ref, toRefs } from "vue";
 import type { PaginationTypes } from "./types";
 import classnames from "classnames";
+import { Logger } from '@src/utils/logger';
+const MODULE = 'pagination'
 
 export default defineComponent({
   name: "Pagination",
@@ -31,6 +33,8 @@ export default defineComponent({
       if (pageNumber > pageCount || pageNumber < 1) {
         return;
       }
+
+      Logger.trace(MODULE, `handle page change pageNumber currentPageNumber: ${JSON.stringify(pageNumber)}`)
       emit("change", pageNumber);
     };
 
