@@ -2,7 +2,7 @@
  * @file 表格body
  */
 
-import { defineComponent, inject, onMounted } from "vue";
+import { defineComponent, inject } from "vue";
 import { TABLE_PROPS } from "./const";
 import { useTableBody } from "../hooks/useTableBody";
 import TableBodyCell from "./TableBodyCell";

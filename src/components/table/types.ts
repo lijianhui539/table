@@ -21,7 +21,7 @@ export type DataSourceType = {
 
 // 排序事件emit的对象
 export type SortOptions = {
-  sortKey: string;
+  fieldKey: string;
   sortType: string;
 };
 
