@@ -6,8 +6,7 @@ import { TableHeadCellProps, SortOptions } from "../table/types";
 import { ref, toRefs, watch } from "vue";
 import { SORT_TYPE_LIST, SortIconStatus } from "../table/const";
 import PubSub from "pubsub-js";
-import { Logger } from '@src/utils/logger';
-const MODULE = 'table-head-cell'
+
 
 export function useTableHeadCell(
   props: TableHeadCellProps,
@@ -41,12 +40,10 @@ export function useTableHeadCell(
     if (sortListIndex.value === SortIconStatus.Desc) {
       sortListIndex.value = SortIconStatus.Disable;
       PubSub.publish("table-head-sort", sortOptions);
-      Logger.trace(MODULE, `handle sort event sortOptions: ${JSON.stringify(sortOptions)}`)
       return;
     }
     sortListIndex.value++;
     PubSub.publish("table-head-sort", sortOptions);
-    Logger.trace(MODULE, `handle sort event sortOptions: ${JSON.stringify(sortOptions)}`)
   };
   return {
     onSort,
