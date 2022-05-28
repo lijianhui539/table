@@ -6,6 +6,7 @@ import { defineComponent, ref, Ref, toRefs } from "vue";
 import type { PaginationTypes } from "./types";
 import classnames from "classnames";
 import { Logger } from '@src/utils/logger';
+import { PaginationNum } from './const';
 const MODULE = 'pagination'
 
 export default defineComponent({
@@ -59,22 +60,22 @@ export default defineComponent({
 
       // 页码是否被省略
       let isShowBtn = (index: number) => {
-        if (pageCount < 8) {
+        if (pageCount < PaginationNum.MaxPageNum) {
           return true;
         } else {
-          if (index === 1 || index === pageCount) {
+          if (index === PaginationNum.FirstPage || index === pageCount) {
             return true;
           } else {
-            if (currentPage.value < 4 && index < 6) {
+            if (currentPage.value < PaginationNum.MinPageNum && index < PaginationNum.MinPageCount) {
               return true;
             } else if (
-              currentPage.value > pageCount - 4 &&
-              index > pageCount - 6
+              currentPage.value > pageCount - PaginationNum.MinPageNum &&
+              index > pageCount - PaginationNum.MinPageCount
             ) {
               return true;
             } else if (
-              index < currentPage.value + 3 &&
-              index > currentPage.value - 3
+              index < currentPage.value + PaginationNum.CriticalPageNum &&
+              index > currentPage.value - PaginationNum.CriticalPageNum
             ) {
               return true;
             } else {
@@ -86,7 +87,7 @@ export default defineComponent({
 
       // 是否显示省略号
       let isShowEllipsis = (index: number) => {
-        return index === 2 || index === pageCount - 1;
+        return index === PaginationNum.PageEllipsis || index === pageCount - 1;
       };
 
       return (

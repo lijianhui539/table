@@ -3,7 +3,7 @@
 */
 
 import type { TableProps, DataSourceType } from "../table/types";
-import { Ref, onMounted, watch, ref, onBeforeUnmount } from "vue";
+import { Ref, onMounted, watch, ref, onBeforeUnmount, toRefs } from "vue";
 import { TableSort } from "../table/const";
 import cloneDeep from "lodash/cloneDeep";
 import PubSub from "pubsub-js";
@@ -14,16 +14,16 @@ type DataSourceTypeKeys = keyof DataSourceType;
 
 export function useTableBody(props: TableProps, currentPage: Ref<number>) {
   let renderList: Ref<DataSourceType[]> = ref([]);
-  let { pageSize, dataSource } = props
+  let { pageSize, dataSource } = toRefs(props)
 
   // 异常处理
-  if (!Array.isArray(dataSource)) {
+  if (!Array.isArray(dataSource.value)) {
     Logger.error(MODULE, 'error: dataSource Expected Array');
-    dataSource = []
+    dataSource.value = []
   }
 
   // 记录源数据 取消排序时使用
-  let sourceData: DataSourceType[] = cloneDeep(dataSource);
+  let sourceData = cloneDeep(dataSource.value);
   let pubSubToken = "";
 
   // 记录排序 和 排序字段 翻页时使用
@@ -38,8 +38,8 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
     () => {
       // 排序状态下翻页  只有数字排序有效果
       if (recordFieldKey && recordSortType && recordFieldKey === "age") {  // todo: 必须指定字段才能规避ts报错问题 待学习ts后解决
-        dataSource = fnSortTable(
-          dataSource,
+        dataSource.value = fnSortTable(
+          dataSource.value,
           recordFieldKey,
           recordSortType,
           sourceData
@@ -47,9 +47,9 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
       }
 
       // 分页
-      renderList.value = dataSource.slice(
-        (currentPage.value - 1) * pageSize,
-        currentPage.value * pageSize
+      renderList.value = dataSource.value.slice(
+        (currentPage.value - 1) * pageSize.value,
+        currentPage.value * pageSize.value
       );
     },
     {
@@ -69,13 +69,13 @@ export function useTableBody(props: TableProps, currentPage: Ref<number>) {
 
     // 排序
     renderList.value = fnSortTable(
-      dataSource,
+      dataSource.value,
       fieldKey as "age",
       sortType,
       sourceData
     ).slice(
-      (currentPage.value - 1) * pageSize,
-      currentPage.value * pageSize
+      (currentPage.value - 1) * pageSize.value,
+      currentPage.value * pageSize.value
     );
 
     // 排序完回第一页

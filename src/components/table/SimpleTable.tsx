@@ -10,6 +10,8 @@ import TableBody from "./TableBody";
 import Pagination from "../pagination";
 import { TABLE_PROPS } from "./const";
 import { useTable } from "../hooks/useTable";
+import { Logger } from '@src/utils/logger';
+const MODULE = 'table'
 
 export default defineComponent({
   name: "SimpleTable",
@@ -19,12 +21,14 @@ export default defineComponent({
     TableBody,
     TableHead,
   },
+  emits:['sort-change'],
   setup(props: TableProps, { emit }) {
     let { dataSource, pageSize } = toRefs(props);
     let { currentPage, onPageChange, renderColumns } = useTable(props);
 
     // provide 外发sort事件 提供给内部排序使用
     let onTableSort = (resSortOption: SortOptions) => {
+      Logger.trace(MODULE, `handle sort event sortOptions: ${JSON.stringify(resSortOption)}`)
       emit("sort-change", resSortOption);
     };
     
