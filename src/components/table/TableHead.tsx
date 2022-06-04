@@ -2,8 +2,8 @@
  * @file 表格head
  */
 
-import { defineComponent } from "vue";
-import { type TableHeadProps, tableHeadProps } from "./types";
+import { defineComponent, toRefs } from "vue";
+import { type TableHeadProps, tableHeadProps } from "../types/table";
 import TableHeadCell from "./TableHeadCell";
 
 export default defineComponent({
@@ -11,15 +11,16 @@ export default defineComponent({
   props: tableHeadProps,
   setup(props: TableHeadProps) {
     return () => {
+      let { columns, sortOptions } = toRefs(props);
       return (
         <>
           <thead>
             <tr>
-              {Array.isArray(props.columns) &&
-                props.columns.map((column) => (
+              {Array.isArray(columns.value) &&
+                columns.value.map((col) => (
                   <TableHeadCell
-                    column={column}
-                    sortOptions={props.sortOptions}
+                    column={col}
+                    sortOptions={sortOptions.value}
                   ></TableHeadCell>
                 ))}
             </tr>

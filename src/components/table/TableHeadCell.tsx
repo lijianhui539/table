@@ -2,39 +2,49 @@
  * @file 表头单元格
  */
 
-import { defineComponent, inject } from "vue";
-import type { TableHeadCellProps } from "./types";
-import { tableHeadCellProps } from "./types";
-import { useTableHeadCell } from "../hooks/useTableHeadCell";
-import { TableSort, TABLE_PROPS } from "./const";
+import { defineComponent, inject, toRefs } from "vue";
+import type { TableHeadCellProps, SortOptions } from "../types/table";
+import { tableHeadCellProps } from "../types/table";
+import { TableSort, TABLE_PROPS } from "../const/table";
 import classnames from "classnames";
 
 export default defineComponent({
   name: "TableHeadCell",
   props: tableHeadCellProps,
   setup(props: TableHeadCellProps) {
+    let { column } = toRefs(props);
     let { onTableSort } = inject(TABLE_PROPS)!;
-    let { onSort } = useTableHeadCell(props, onTableSort);
-
+    let onSort = () => {
+      if (column.value.sort === TableSort.Disable) {
+        column.value.sort = TableSort.Asc;
+      } else if (column.value.sort === TableSort.Asc) {
+        column.value.sort = TableSort.Desc;
+      } else {
+        column.value.sort = TableSort.Disable;
+      }
+      let resSortOptions: SortOptions = {
+        fieldKey: column.value.key || "",
+        sortType: column.value.sort || TableSort.Disable,
+      };
+      onTableSort(resSortOptions);
+    };
     return () => {
       return (
         <>
           <td>
-            <span key={props.column.key}>
-              {props.column.title}
-              {props.column.sortable ? (
+            <span key={column.value.key}>
+              {column.value.title}
+              {column.value.sortable ? (
                 <span
-                  onClick={() => {
-                    onSort(props.column.key);
-                  }}
+                  onClick={onSort}
                   class={classnames(
                     "iconfont",
                     "sort-icon",
                     "icon-shangjiantou",
                     {
                       "table-head__sort-active":
-                        props.column.sort !== TableSort.Disable,
-                      "icon-xiajiantou": props.column.sort === TableSort.Desc,
+                        column.value.sort !== TableSort.Disable,
+                      "icon-xiajiantou": column.value.sort === TableSort.Desc,
                     }
                   )}
                 ></span>

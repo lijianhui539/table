@@ -3,7 +3,7 @@
  */
 
 import { defineComponent } from "vue";
-import { tableBodyCellProps } from "./types";
+import { tableBodyCellProps } from "../types/table";
 import lodashIsString from "lodash/isString";
 import lodashGet from "lodash/get";
 

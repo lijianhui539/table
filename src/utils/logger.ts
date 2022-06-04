@@ -3,7 +3,7 @@
  */
 
 const logWrapper = (location: string, msg: string, log: (location: string, msg: string) => void) => {
-    log(`[@component:Table/${location}]:`, msg)
+    // log(`[@component:Table/${location}]:`, msg)
 }
 
 const trace = (location: string, msg: string): void => logWrapper(location, msg, console.trace)
