@@ -137,7 +137,7 @@ export default defineComponent({
                 />
                 页
                 <a
-                  class="pagination-next"
+                  class="pagination-next pagination-jump__go"
                   onClick={() =>
                     handleClick(jumpPage.value as number, pageCount)
                   }
