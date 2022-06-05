@@ -2,24 +2,23 @@
  * @file 表格body
  */
 
-import { defineComponent, inject } from "vue";
-import { TABLE_PROPS } from "./const";
-import { useTableBody } from "../hooks/useTableBody";
+import { defineComponent, toRefs } from "vue";
 import TableBodyCell from "./TableBodyCell";
+import { tableBodyProps } from "../types/table";
 
 export default defineComponent({
   name: "TableBody",
-  setup() {
-    let { props, currentPage } = inject(TABLE_PROPS)!;
-    let { renderList } = useTableBody(props, currentPage);
+  props: tableBodyProps,
+  setup(props) {
+    let { renderList, columns, rowKey } = toRefs(props);
     return () => {
       return (
         <>
           <tbody>
             {renderList.value.map((row) => {
               return (
-                <tr key={props.rowKey(row)}>
-                  {Array.isArray(props.columns) &&
+                <tr key={rowKey.value(row)}>
+                  {Array.isArray(columns.value) &&
                     props.columns.map((column) => (
                       <TableBodyCell rowData={row} column={column} />
                     ))}

@@ -3,10 +3,10 @@
 */
 
 import { defineComponent, ref, Ref, toRefs } from "vue";
-import type { PaginationTypes } from "./types";
+import type { PaginationTypes } from "../types/pagination";
 import classnames from "classnames";
 import { Logger } from '@src/utils/logger';
-import { PaginationNum } from './const';
+import { PaginationNum } from '../const/pagination';
 const MODULE = 'pagination'
 
 export default defineComponent({

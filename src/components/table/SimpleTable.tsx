@@ -3,15 +3,13 @@
  */
 
 import { defineComponent, provide, toRefs } from "vue";
-import { tableProps } from "./types";
-import type { TableProps, SortOptions } from "./types";
+import { tableProps } from "../types/table";
+import type { TableProps, SortOptions } from "../types/table";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import Pagination from "../pagination";
-import { TABLE_PROPS } from "./const";
-import { useTable } from "../hooks/useTable";
-import { Logger } from '@src/utils/logger';
-const MODULE = 'table'
+import { TABLE_PROPS } from "../const/table";
+import { useTableDataSource } from "../hooks/useTable";
 
 export default defineComponent({
   name: "SimpleTable",
@@ -21,24 +19,17 @@ export default defineComponent({
     TableBody,
     TableHead,
   },
-  emits:['sort-change'],
+  emits: ["table-sort"],
   setup(props: TableProps, { emit }) {
-    let { dataSource, pageSize } = toRefs(props);
-    let { currentPage, onPageChange, renderColumns } = useTable(props);
-
-    // provide 外发sort事件 提供给内部排序使用
-    let onTableSort = (resSortOption: SortOptions) => {
-      Logger.trace(MODULE, `handle sort event sortOptions: ${JSON.stringify(resSortOption)}`)
-      emit("sort-change", resSortOption);
+    let emitSortOpts = (sortOptions: SortOptions) => {
+      emit("table-sort", sortOptions);
     };
-    
+    let { dataSource, pageSize, rowKey } = toRefs(props);
+    let { renderColumns, onTableSort, currentPage, onPageChange, renderList } =
+      useTableDataSource(props, emitSortOpts);
     let tableData = {
-      currentPage,
-      props,
       onTableSort,
     };
-
-    // 提供给body使用
     provide(TABLE_PROPS, tableData);
 
     return () => {
@@ -46,7 +37,11 @@ export default defineComponent({
         <>
           <table class="is-bordered is-hoverable is-fullwidth table">
             <TableHead columns={renderColumns.value}></TableHead>
-            <TableBody></TableBody>
+            <TableBody
+              rowKey={rowKey.value}
+              renderList={renderList.value}
+              columns={renderColumns.value}
+            ></TableBody>
           </table>
           <Pagination
             total={dataSource.value.length}

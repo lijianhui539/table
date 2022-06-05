@@ -2,8 +2,8 @@
  * @file 表格body单元格
  */
 
-import { defineComponent } from "vue";
-import { tableBodyCellProps } from "./types";
+import { defineComponent, toRefs } from "vue";
+import { tableBodyCellProps } from "../types/table";
 import lodashIsString from "lodash/isString";
 import lodashGet from "lodash/get";
 
@@ -12,18 +12,21 @@ export default defineComponent({
   props: tableBodyCellProps,
   setup(props) {
     return () => {
-      let { column, rowData } = props;
+      let { column, rowData } = toRefs(props);
       return (
         <>
-          {column.render ? (
+          {column.value.render ? (
             <td>
-              {lodashIsString(column.render)
-                ? column.render
-                : column.render(rowData)}
+              {lodashIsString(column.value.render)
+                ? column.value.render
+                : column.value.render(rowData.value)}
             </td>
           ) : (
-            <td key={column.key} title={lodashGet(rowData, column.key, "")}>
-              {lodashGet(rowData, column.key, "-")}
+            <td
+              key={column.value.key}
+              title={lodashGet(rowData, column.value.key, "")}
+            >
+              {lodashGet(rowData, column.value.key, "-")}
             </td>
           )}
         </>

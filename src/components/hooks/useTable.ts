@@ -1,37 +1,30 @@
 /** 
-  @file 外层表格处理逻辑
+  @file 处理整个表格逻辑
 */
 
-import { ref, computed, toRefs } from "vue";
-import type { TableProps } from "../table/types";
-import { TableSort } from "../table/const";
-import { Logger } from '@src/utils/logger';
-const MODULE = 'table'
+import { toRefs } from "vue";
+import type { TableProps, SortOptions } from "../types/table";
+import { useTableHead } from "./useTableHead";
+import { useTableSort } from "./useTableSort";
+import { usePagination } from "./usePagination";
 
-export function useTable(props: TableProps) {
-  let { columns } = toRefs(props)
-  // 异常处理
-  if (!Array.isArray(columns.value)) {
-    Logger.error(MODULE, 'columns Expected Array');
-    columns.value = []
-  }
-  let currentPage = ref(1);
+export function useTableDataSource(props: TableProps, emitSortOpts: (sortOptions: SortOptions) => void) {
+  let { currentPage, onPageChange } = usePagination();
+  let { columns, dataSource, pageSize } = toRefs(props);
+  let { renderColumns } = useTableHead(columns);
 
-  // 拿来数据先设置默认的排序规则
-  let renderColumns = computed(() => {
-    return columns.value.map((item) => {
-      item.sort = TableSort.Disable;
-      return item;
-    });
-  });
-
-  let onPageChange = (pageNumber: number) => {
-    currentPage.value = pageNumber;
-  };
+  let { onTableSort, renderList } = useTableSort(
+    dataSource,
+    currentPage,
+    pageSize,
+    emitSortOpts
+  );
 
   return {
+    renderColumns,
+    onTableSort,
     currentPage,
     onPageChange,
-    renderColumns,
+    renderList,
   };
 }
