@@ -3,12 +3,12 @@
 */
 
 import { toRefs } from "vue";
-import type { TableProps } from "../types/table";
+import type { TableProps, SortOptions } from "../types/table";
 import { useTableHead } from "./useTableHead";
 import { useTableSort } from "./useTableSort";
 import { usePagination } from "./usePagination";
 
-export function useTableDataSource(props: TableProps) {
+export function useTableDataSource(props: TableProps, emitSortOpts: (sortOptions: SortOptions) => void) {
   let { currentPage, onPageChange } = usePagination();
   let { columns, dataSource, pageSize } = toRefs(props);
   let { renderColumns } = useTableHead(columns);
@@ -16,7 +16,8 @@ export function useTableDataSource(props: TableProps) {
   let { onTableSort, renderList } = useTableSort(
     dataSource,
     currentPage,
-    pageSize
+    pageSize,
+    emitSortOpts
   );
 
   return {

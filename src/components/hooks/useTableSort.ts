@@ -11,7 +11,8 @@ const MODULE = "table-sort";
 export function useTableSort(
   dataSource: Ref<any[]>,
   currentPage: Ref<number>,
-  pageSize: Ref<number>
+  pageSize: Ref<number>,
+  emitSortOpts: (sortOptions: SortOptions) => void
 ) {
   let sortTypeNumber = SORT_TYPE_NUMBER[TableSort.Disable];
   let sortOptions = ref<SortOptions>({
@@ -38,6 +39,7 @@ export function useTableSort(
   let onTableSort = (resSortOption: SortOptions) => {
     sortOptions.value = resSortOption;
     currentPage.value = 1;
+    emitSortOpts(resSortOption)
     Logger.trace(
       MODULE,
       `handle sort event sortOptions: ${JSON.stringify(resSortOption)}`

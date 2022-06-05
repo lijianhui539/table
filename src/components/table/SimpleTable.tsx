@@ -4,7 +4,7 @@
 
 import { defineComponent, provide, toRefs } from "vue";
 import { tableProps } from "../types/table";
-import type { TableProps } from "../types/table";
+import type { TableProps, SortOptions } from "../types/table";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import Pagination from "../pagination";
@@ -19,16 +19,17 @@ export default defineComponent({
     TableBody,
     TableHead,
   },
-  setup(props: TableProps) {
+  emits: ["table-sort"],
+  setup(props: TableProps, { emit }) {
+    let emitSortOpts = (sortOptions: SortOptions) => {
+      emit("table-sort", sortOptions);
+    };
     let { dataSource, pageSize, rowKey } = toRefs(props);
     let { renderColumns, onTableSort, currentPage, onPageChange, renderList } =
-      useTableDataSource(props);
-
+      useTableDataSource(props, emitSortOpts);
     let tableData = {
       onTableSort,
     };
-
-    // 提供给body使用
     provide(TABLE_PROPS, tableData);
 
     return () => {
