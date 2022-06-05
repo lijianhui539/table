@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.96% </span>
+                <span class="strong">97.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/33</span>
+                <span class='fraction'>35/36</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.96% </span>
+                <span class="strong">97.22% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/33</span>
+                <span class='fraction'>35/36</span>
             </div>
         
             
@@ -96,7 +96,10 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -109,31 +112,34 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">96x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
+<span class="cline-any cline-yes">276x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">110x</span>
-<span class="cline-any cline-yes">96x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">290x</span>
+<span class="cline-any cline-yes">276x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * @file 表格body单元格
  */
 &nbsp;
-import { defineComponent } from "vue";
+import { defineComponent, toRefs } from "vue";
 import { tableBodyCellProps } from "../types/table";
 import lodashIsString from "lodash/isString";
 import lodashGet from "lodash/get";
@@ -143,18 +149,21 @@ export default defineComponent({
   props: tableBodyCellProps,
   setup(props) {
     return () =&gt; {
-      let { column, rowData } = props;
+      let { column, rowData } = toRefs(props);
       return (
         &lt;&gt;
-          {column.render ? (
+          {column.value.render ? (
             &lt;td&gt;
-              {<span class="branch-0 cbranch-no" title="branch not covered" >lodashIsString(column.render)</span>
-<span class="cstat-no" title="statement not covered" >                ? column.render</span>
-                : column.render(rowData)}
+              {<span class="branch-0 cbranch-no" title="branch not covered" >lodashIsString(column.value.render)</span>
+<span class="cstat-no" title="statement not covered" >                ? column.value.render</span>
+                : column.value.render(rowData.value)}
             &lt;/td&gt;
           ) : (
-            &lt;td key={column.key} title={lodashGet(rowData, column.key, "")}&gt;
-              {lodashGet(rowData, column.key, "-")}
+            &lt;td
+              key={column.value.key}
+              title={lodashGet(rowData.value, column.value.key, "")}
+            &gt;
+              {lodashGet(rowData.value, column.value.key, "-")}
             &lt;/td&gt;
           )}
         &lt;/&gt;
@@ -169,7 +178,7 @@ export default defineComponent({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Jun 05 2022 10:18:35 GMT+0800 (中国标准时间)
+                at Sun Jun 05 2022 21:40:28 GMT+0800 (中国标准时间)
             </div>
         <script src="../../prettify.js"></script>
         <script>

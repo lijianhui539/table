@@ -24,9 +24,9 @@ export default defineComponent({
           ) : (
             <td
               key={column.value.key}
-              title={lodashGet(rowData, column.value.key, "")}
+              title={lodashGet(rowData.value, column.value.key, "")}
             >
-              {lodashGet(rowData, column.value.key, "-")}
+              {lodashGet(rowData.value, column.value.key, "-")}
             </td>
           )}
         </>

@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { expect, test } from "vitest";
 import SimpleTable from "../src/components/table";
-import type { DataSourceType } from "../src/components/table/types";
+import type { DataSourceType } from "../src/components/types/table";
 import { h } from "vue";
 import TableHeadCell from "../src/components/table/TableHeadCell";
 import TableBodyCell from "../src/components/table/TableBodyCell";
